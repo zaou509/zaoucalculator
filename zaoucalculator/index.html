@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calculator</title>
+</head>
+<body>
+    <div class="content">
+
+        <div class="upper">
+            <h1>calculator</h1>
+            <p>choose themes</p>
+        </div>
+        <div class="lower">
+            <div class="calculator">
+                <div class="screen">
+                    <p class="prev"></p><span class="operating"></span>
+                    <p class="curr">0</p>
+                </div>
+                <div class="mainbody">
+                    <div class="other">
+                        <span class="delete">delt</span>
+                        <span class="deleteall">C</span>
+                        <span class="power">^</span>   
+                        <span class='equal'>=</span>                                             
+                    </div>
+                    <div class="numbers">
+                        <span>1</span>
+                        <span>2</span>
+                        <span>3</span>
+                        <span>4</span>
+                        <span>5</span>
+                        <span>6</span>
+                        <span>7</span>
+                        <span>8</span>
+                        <span>9</span>
+                        <span>0</span>
+                    </div>
+                    <div class="operator">
+                        <span class="plus">+</span>
+                        <span class="minus">-</span>
+                        <span class="divider">/</span>
+                        <span class="multiply">*</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .content{
+            height: 100vh;
+            width: 100%;
+            
+        }
+        .upper{
+            width: 100%;
+            height: 50px;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 80px;
+        }
+        .lower{
+            height: 100%;
+            width: 100%;
+        }
+        .calculator{
+            position: relative;
+            margin: 5% auto 0;
+            height: 550px;
+            width: 450px;
+            background-color: black;
+            color: white;
+            border-radius: 10px;
+        }
+        .screen{
+            position: absolute;
+            top: 15px;
+            width: 90%;
+            height: 100px;
+            background-color: white;
+            color: black;
+            border-radius: 10px;
+        }
+        .screen p{
+            position: absolute;
+            right: 10px;
+            bottom: 3px;
+            font-size: 2rem;
+        }
+        .mainbody{
+            position: absolute;
+            bottom: 0;
+            height: 78%;
+            width: 100%;
+            background-color: blue;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 70px;
+            border-radius: 10px;
+            
+        }
+        .other{
+            position: absolute;
+            top: 0;
+            right: 5px;
+            justify-content: space-between;
+            gap: 15px;
+            display: flex;
+        }
+        .other span{
+            height: 65px;
+            width: 65px;
+            background-color: deeppink;
+        }
+
+        .numbers{
+            display: grid;
+            grid-template-columns: auto auto auto;
+            margin-top: 70px;
+            gap: 10px;
+        }
+        .numbers span{
+            height: 80px;
+            width: 80px;
+            background-color: blueviolet;
+        }
+        .operator{
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            right: 5px;
+            bottom: 39px;
+
+        }
+        .operator span {
+            height: 80px;
+            width: 80px;
+            background-color: cyan;
+        }
+        .screen .prev{
+            position: absolute;
+            top: 5px;
+            font-size: 20px;
+            color: black;
+            right: 15px;
+
+        }
+        .operating{
+            position: absolute;
+            right: 3px;
+            margin-left: 2px;
+        }
+    </style>
+    <script>
+
+        const numbers = document.querySelectorAll('.numbers span');
+        const upperscreen = document.querySelector('.screen .prev')
+        const lowerscreen = document.querySelector('.screen .curr')
+        const operators = document.querySelectorAll('.operator span')
+        const equal = document.querySelector('.equal');
+        const operating = document.querySelector('.operating')
+        const deleteNum = document.querySelector('.delete');
+        let get0 = true
+        let lastresults = false
+        let opused 
+
+        function add(prev,current){
+            let result = prev + current
+            console.log(current);
+            upperscreen.textContent = result
+
+        }
+        function subtract(prev,current){
+            let result = prev - current
+            console.log(current);
+            upperscreen.textContent = result
+        }
+        function multiply(prev,current){
+            let result = prev * current
+            console.log(current);
+            upperscreen.textContent = result
+        }
+        function divide(prev,current){
+            let result = prev / current
+            console.log(current);
+            upperscreen.textContent = result
+
+        }
+        function deleting(prev){
+            lowerscreen.textContent =  prev.slice(0,-1)
+
+
+        }
+        function operate(operation,prev,current){
+
+            if(current === "") return
+
+            if(operation !== ''){
+                if(operation === '+'){
+                    console.log('looser')
+                    add(Number(prev),Number(current))                    
+                }
+                if(operation === '*'){
+                    multiply(Number(prev),Number(current)) 
+                }
+                if(operation === '/'){
+                    divide(Number(prev),Number(current)) 
+                }
+                if(operation === '-'){
+                    subtract(Number(prev),Number(current)) 
+                }
+                else{
+                    return
+                }
+            }
+        }
+        function populate (num){
+            lowerscreen.textContent = lowerscreen.textContent.toString() + num 
+        }
+
+        numbers.forEach(number => {
+            number.addEventListener('click', function(){
+                if(opused === ''){
+                    upperscreen.textContent = '';                  
+                }
+
+                if(get0 === true){
+                    lowerscreen.textContent = '';
+                }
+                get0 = false
+                populate(number.textContent)
+            })
+        })
+
+        operators.forEach(operator => {
+            operator.addEventListener('click', function(){
+                let lastresult
+                if(upperscreen.textContent === ''){
+                    upperscreen.textContent =  lowerscreen.textContent
+                    console.log(upperscreen.textContent);
+                    lowerscreen.textContent = '';  
+                    lastresult = lowerscreen.textContent;                  
+                }else{
+                    lastresult = lowerscreen.textContent;
+                    lowerscreen.textContent = ''; 
+                }
+                    operating.textContent = opused;
+                if(lastresults === false){
+
+                    opused = operator.textContent
+                    operate(opused,upperscreen.textContent,lastresult)
+                    lastresults = true
+                    operating.textContent = opused
+                }else if(lastresults === true){  
+                    operate(opused,upperscreen.textContent,lastresult)
+                    opused = operator.textContent; 
+                    operating.textContent = opused
+                }
+            })
+        })
+
+        equal.addEventListener('click',function(){
+            operate(opused,upperscreen.textContent,lowerscreen.textContent)
+            lowerscreen.textContent = '';
+            operating.textContent = '';
+            opused = ''
+            
+        })
+        deleteNum.addEventListener('click',function(){
+            deleting(lowerscreen.textContent)
+        })
+
+    </script>
+    
+</body>
+</html>
